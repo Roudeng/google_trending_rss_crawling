@@ -7,14 +7,16 @@ from flask import Flask, jsonify, request
 from google.cloud import storage
 from google.cloud import bigquery
 
+app = Flask(__name__) # 讓gunicorn main:app找得到
+
 # GCS env
 GCS_BUCKET = os.getenv("GCS_BUCKET")  # 必填
 GCS_PREFIX = os.getenv("GCS_PREFIX", "google_trends_rss/tw")
 
 # BQ env
 BQ_PROJECT = os.getenv("BQ_PROJECT")  # 預設用Cloud Run所在專案
-BQ_DATASET = os.getenv("BQ_DATASET", "trends")
-BQ_TABLE = os.getenv("BQ_TABLE", "google_trends_tw")
+BQ_DATASET = os.getenv("BQ_DATASET", "google_trending")
+BQ_TABLE = os.getenv("BQ_TABLE", "trending_tw")
 
 
 url = "https://trends.google.com/trending/rss?geo=TW"
@@ -62,7 +64,7 @@ def save_to_gcs(data: list[dict]) -> tuple[str, str]:
     stamp = datetime.now(tz_tw).strftime("%Y%m%d_%H%M")
     object_name = f"{GCS_PREFIX}/trends_tw_{stamp}.jsonl"
 
-    jsonl = "\n".join(json.dumps(r, ensure_ascii=False) for r in rows) + "\n"
+    jsonl = "\n".join(json.dumps(r, ensure_ascii=False) for r in data) + "\n"
 
     client = storage.Client()
     blob = client.bucket(GCS_BUCKET).blob(object_name)
@@ -117,4 +119,5 @@ def run():
             "bq": bq_result,
         }
     ), 200
+
 
