@@ -4,8 +4,7 @@ import xml.etree.ElementTree as ET
 import os
 import json
 from flask import Flask, jsonify, request
-from google.cloud import storage
-from google.cloud import bigquery
+from google.cloud import storage, bigquery
 
 app = Flask(__name__) # 讓gunicorn main:app找得到
 
@@ -118,6 +117,7 @@ def run():
             "bq": bq_result,
         }
     ), 200
+
 
 
 
