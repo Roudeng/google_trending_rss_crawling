@@ -40,7 +40,9 @@ def fetch_data() -> list[dict]:
         for n in news:
             news_title = n.findtext("ht:news_item_title", namespaces=ns)
             news_src = n.findtext("ht:news_item_source", namespaces=ns)
-            news_list.append((news_title, news_src))
+            news_list.append({'news_title': news_title, 
+                              'news_src': news_src
+                             })
         # print(title, amount, pubdate, news_list)
         data.append(
             {
@@ -117,6 +119,7 @@ def run():
             "bq": bq_result,
         }
     ), 200
+
 
 
 
