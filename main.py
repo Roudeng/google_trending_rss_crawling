@@ -66,7 +66,7 @@ def save_to_gcs(data: list[dict]) -> tuple[str, str]:
 
     jsonl = "\n".join(json.dumps(r, ensure_ascii=False) for r in data) + "\n"
 
-    client = storage.Client()
+    client = storage.Client(project=BQ_PROJECT)
     blob = client.bucket(GCS_BUCKET).blob(object_name)
     blob.upload_from_string(jsonl, content_type="application/json")
 
@@ -119,6 +119,7 @@ def run():
             "bq": bq_result,
         }
     ), 200
+
 
 
 
