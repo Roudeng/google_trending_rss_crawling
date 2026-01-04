@@ -75,7 +75,7 @@ def save_to_gcs(data: list[dict]) -> tuple[str, str]:
 
 
 def load_to_bigquery(gcs_uri: str) -> str:
-    client = bigquery.Client(project=BQ_PROJECT or None)
+    client = bigquery.Client(project=BQ_PROJECT)
     table_id = f"{client.project}.{BQ_DATASET}.{BQ_TABLE}"
 
     job_config = bigquery.LoadJobConfig(
@@ -117,6 +117,7 @@ def run():
             "bq": bq_result,
         }
     ), 200
+
 
 
 
