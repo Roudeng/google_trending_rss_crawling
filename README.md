@@ -1,1 +1,3 @@
-# google_trending_rss_crawling
+撰寫Python爬蟲程式排程爬取Google Trends臺灣前十大熱門搜尋關鍵字資訊，使用HuggingFace中已訓練好的中文BERT模型，依據各項規則權重計分判得標題正負向藉以了解熱門議題的輿情趨勢，包含：rule-based、AI-based。
+
+使用Cloud Scheduler排程觸發Cloud Run Functions爬蟲寫入GCS，並串接BigQuery自動化批次載入資料倉儲，支援SQL資料查詢和後續分析功能。
